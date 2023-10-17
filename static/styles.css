@@ -1,0 +1,39 @@
+
+header {
+    color: #2D080A;
+    background-color: #50547C;
+    padding: 2%;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+
+#first-section {
+    margin-top: 20px;
+}
+
+body {
+    background-color: #C8CFF9;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+section {
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #50547C;
+    margin-bottom: 20px;
+    color: #2D080A;
+    background-color: #C8CFF9;
+}
+
+#background-rectangle {
+    background-color: #2D080A;
+    width: 60%;
+    height: 100%;
+    position: absolute;
+    top: 25%;
+    left: 20%;
+    z-index: -5;
+}
