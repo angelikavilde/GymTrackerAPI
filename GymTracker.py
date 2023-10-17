@@ -28,7 +28,6 @@ def get_user_code() -> str:
     connection = get_db_connection()
     while(check_if_code_exists(connection, code)):
         code = generate_unique_code()
-        print(code)
     return str(code)
 
 
@@ -44,12 +43,12 @@ def generate_unique_code() -> str:
     return "".join(choice(characters) for _ in range(12))
 
 
-def check_if_code_exists(conn: connection, code: str) -> bool:
+def check_if_code_exists(conn: connection, potential_code: str) -> bool:
     """Verifies if the code already exists in the db"""
     with conn.cursor() as cur:
-        cur.execute("""SELECT * FROM users WHERE user_code = %s""", [code])
+        cur.execute("""SELECT * FROM users WHERE user_code = %s""", [potential_code])
         data = cur.fetchall()
-    return data is not None
+    return data != []
 
 
 @app.route("/add", methods=["POST"])
