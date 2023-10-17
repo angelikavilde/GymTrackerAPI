@@ -37,6 +37,12 @@ add it yourself to the endpoint like: /get_code?email=***."""
 @app.route("/recover_code/how", methods=["GET"])
 def explain_recover_user_code():
     """"""
+    explanation = """This endpoint allows you to get your forgotten code via email.
+Don't forget to check your spam folder if you cannot locate it!
+Structure your GET request with 'email' as a key
+(could be achieved with PostMan or similar application). Alternatively,
+add it yourself to the endpoint like: /recover_code?email=***."""
+    return render_template("explain_page.html", explanation=explanation, request="Recover code")
 
 
 @app.route("/get_code", methods=["POST"])
@@ -61,12 +67,12 @@ def create_user_code() -> tuple[dict, int]:
     return {"Code": code}, 201
 
 
-@app.route("/recover_code", methods=["POST"])
+@app.route("/recover_code", methods=["GET"])
 def recover_user_code() -> tuple[dict, int]:
     """"""
     email = request.args.get("email")
     if not email:
-        return {"Error": "'email' should be one of the keys for POST request!"}, 400
+        return {"Error": "'email' should be one of the keys for this request!"}, 400
     connection = get_db_connection()
     if not check_if_email_exists(connection, email):
         connection.close()
