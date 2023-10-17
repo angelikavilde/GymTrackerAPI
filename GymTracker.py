@@ -6,7 +6,7 @@ from re import fullmatch
 from os import environ
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, render_template
 from psycopg2 import connect
 from psycopg2.extensions import connection
 from psycopg2.extras import RealDictCursor
@@ -21,11 +21,29 @@ def main_page():
     return send_from_directory("static", "index.html")
 
 
+@app.route("/get_code/how", methods=["GET"])
+def explain_create_user_code():
+    """"""
+    explanation = """This endpoint allows you to add your email and create a user code
+for you to use when adding your data or viewing it in the future. Sending a request
+will send you a follow up email with your user code that can be later recovered.
+Don't forget to check your spam folder if you cannot locate it!
+Structure your POST request with 'email' as a key
+(could be achieved with PostMan or similar application). Alternatively,
+add it yourself to the endpoint like: /get_code?email=***."""
+    return render_template("explain_page.html", explanation=explanation, request="Get code")
+
+
+@app.route("/recover_code/how", methods=["GET"])
+def explain_recover_user_code():
+    """"""
+
+
 @app.route("/get_code", methods=["POST"])
 def create_user_code() -> tuple[dict, int]:
     """Creates a code for the user's POST
     request and verifies if it exists"""
-    email = request.args.get('email')
+    email = request.args.get("email")
     if not email:
         return {"Error": "'email' should be one of the keys for POST request!"}, 400
     if not verify_email(email):
@@ -46,7 +64,7 @@ def create_user_code() -> tuple[dict, int]:
 @app.route("/recover_code", methods=["POST"])
 def recover_user_code() -> tuple[dict, int]:
     """"""
-    email = request.args.get('email')
+    email = request.args.get("email")
     if not email:
         return {"Error": "'email' should be one of the keys for POST request!"}, 400
     connection = get_db_connection()
